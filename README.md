@@ -29,26 +29,32 @@ Download and install **Drupal** using **Composer**, **`quick-start`** and the **
     http://127.0.0.1:8888/admin/modules#edit-modules-other
 
 
+TL;DR
+```
+yes | composer create-project -s dev drupal/recommended-project:9.1.x drupal-9 && cd $_ && composer require drupal/jsonapi_views && php -d memory_limit=-1 web/core/scripts/drupal quick-start demo_umami
+```
+
 ## Part 2 - Backend demonstration.
 
 Demonstrate the **JSON:API Views** module functionality using the **Recipes** view.
 
-1. Views UI:
-
-    http://127.0.0.1:8888/admin/structure/views/view/recipes
-
-    * [ ] Change pagination settings to 3 items per page.
-    * [ ] Expose **ID** / `nid` sort.
-    * [ ] Add and expose **Ingredients** / `field_ingredients_value` filter with `Contains` operator.
-
-2. JSON:API Views - Endpoint per **View** and **Display**:
+1. Compare Views UI / JSON:API Views:
+    - Views UI: http://127.0.0.1:8888/admin/structure/views/view/recipes
+    - JSON:API Views: http://127.0.0.1:8888/jsonapi/views/recipes/default
 
     `/jsonapi/views/{{ viewId }}/{{ display }}`
 
     - http://127.0.0.1:8888/jsonapi/views/recipes/default
     - http://127.0.0.1:8888/jsonapi/views/recipes/page_1
 
-3. Pagination query:
+2. Modify view: http://127.0.0.1:8888/admin/structure/views/view/recipes
+    * [ ] Change pagination settings to 6 items per page.
+    * [ ] Expose **Authored on** / `created` sort as **Date**.
+    * [ ] Remove **ID** / `nid` sort.
+    * [ ] Add and expose **Title** / `title` sort.
+    * [ ] Add and expose **Ingredients** / `field_ingredients_value` filter with `Contains` operator.
+
+3. Demo Pagination query:
 
     Next / Previous links included in JSON:API.
 
@@ -57,14 +63,14 @@ Demonstrate the **JSON:API Views** module functionality using the **Recipes** vi
     - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?page=0
     - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?page=1
 
-4. Sorting query:
+4. Demo Sorting query:
 
     `/jsonapi/views/{{ viewId }}/{{ display }}?views-sort[sort_by]={{ sort }}&views-sort[sort_order]={{ ASC|DESC }}`
 
-    - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?views-sort[sort_by]=nid
-    - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?views-sort[sort_by]=nid&views-sort[sort_order]=DESC
+    - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?views-sort[sort_by]=title
+    - http://127.0.0.1:8888/jsonapi/views/recipes/page_1?views-sort[sort_by]=title&views-sort[sort_order]=DESC
 
-5. Exposed filters query:
+5. Demo Exposed filters query:
 
     `/jsonapi/views/{{ viewId }}/{{ display }}?views-filter[{{ filter }}]={{ value }}`
 
@@ -167,6 +173,28 @@ Download and install **Nuxt.js** and required Nuxt modules.
       '~/../assets/nuxt-storybook-proxy',
     ]
     ```
+
+TL;DR
+```
+npx create-nuxt-app nuxt && cd $_ && npm i druxt-views @nuxtjs/proxy && npm i -D @nuxtjs/storybook
+```
+
+`nuxt.config.js`
+```
+  modules: [
+    '@nuxtjs/proxy',
+    'druxt-views',
+    '~/../assets/nuxt-storybook-proxy',
+  ],
+
+  druxt: {
+    baseUrl: 'http://127.0.0.1:8888',
+  },
+
+  proxy: {
+    '/sites/default/files': 'http://127.0.0.1:8888'
+  },
+```
 
 
 ### Part 5 - Frontend demonstration.
