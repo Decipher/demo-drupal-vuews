@@ -40,7 +40,7 @@ export default {
     '@nuxt/content',
     '@nuxtjs/proxy',
     'druxt-views',
-    '~/../assets/nuxt-storybook-proxy',
+    '~/modules/nuxt-storybook-proxy',
   ],
 
   druxt: {
